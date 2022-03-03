@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    form {
+      width: 40%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: auto;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      display: block;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: #f2f0eb;
+    }
+
+
+    input {
+      color: skyblue;
+      border: 3px solid skyblue;
+      border-radius: 20px;
+      padding: 10px 30px;
+      width: 100%;
+    }
+
+    button {
+      width: 50%;
+      margin: 40px auto;
+      background: skyblue;
+      color: #fff;
+      padding: 10px 30px;
+      border: none;
+      border-radius: 30px;
+    }
+
+
+    .video {
+      margin: auto;
+      margin-top: 100px;
+      width: 90%;
+      padding-top: 50px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 500px;
+    }
+
+    .video-description {
+      width: 40%; 
+      display: flex;
+      margin: 0px auto;
+      margin-top: 200px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-description i {
+      font-size: 40px;
+      color: skyblue;
+      letter-spacing: 3px;
+    }
+
+
+    body > a {
+      font-size: 20px;
+      border: 20px;
+      background: skyblue;
+      color: white;
+      margin: 30px auto;
+      width: 10%;
+      text-decoration: none;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 70px;
+      border-radius: 5px;
+      margin-top: 80px;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <form>
+    <input type="text" name="" placeholder="URL">
+    <button>Yuborish</button>
+  </form>
+
+
+  <div class="video">
+
+  </div>
+  <div class="video-description">
+ 
+  </div>
+  <a href="">Download</a>
+  <script type="text/javascript">
+
+
+    document.getElementsByTagName('button')[0].onclick = () =>{
+      event.preventDefault();
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', './index.php?url=' + document.getElementsByTagName('input')[0].value ,true);
+      xhr.onload = () =>{
+        console.log(xhr.responseText)
+
+
+
+
+        if (JSON.parse(xhr.responseText).ok == false) {
+          alert('URLda XATO !!!')
+        }
+
+        else {
+          document.getElementsByTagName('a')[0].href = JSON.parse(xhr.responseText).result.download;
+          document.getElementsByTagName('a')[0].style.display = 'flex';
+         
+            // document.getElementById('src').src = JSON.parse(xhr.responseText).result.download
+            let tagV = document.createElement('video');
+            let tagVsrc = document.createElement('source')
+            tagVsrc.src = JSON.parse(xhr.responseText).result.download;
+            tagV.setAttribute('controls', '');
+            tagV.setAttribute('width', '400px')
+            tagV.appendChild(tagVsrc)
+            document.getElementsByClassName('video')[0].innerHTML = '';
+            document.getElementsByClassName('video')[0].appendChild(tagV)
+            document.getElementsByClassName('video')[0].style.display = 'flex';
+            // document.getElementsByClassName('video-description')[0].style.display = 'flex';
+            document.getElementsByClassName('video-description')[0].innerHTML = '<i class="far fa-heart"> ' + JSON.parse(xhr.responseText).result.like + ' </i>';
+        
+        }
+      }  
+      xhr.send();
+    }
+      
+  </script>
+</body>
+</html>
